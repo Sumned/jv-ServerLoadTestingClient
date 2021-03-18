@@ -13,7 +13,12 @@ public class Console {
     CommandLine commandLine = readCommandArgs(args);
     if (commandLine != null && (commandLine.hasOption("start"))) {
       System.out.println("Press ctrl+C to stop.");
-      LoadTestEngine.start();
+      try {
+        LoadTestEngine.start(commandLine.hasOption("response"));
+      } catch (Exception e) {
+        System.out.println("Error: " + e);
+        System.exit(1);
+      }
     } else {
       help();
     }
@@ -35,6 +40,7 @@ public class Console {
     Options options = new Options();
     options.addOption("start",
       "Input -start after .jar to start the application");
+    options.addOption("response", "Input -response after -start if you want to get response");
     return options;
   }
 
